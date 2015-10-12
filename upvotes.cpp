@@ -4,27 +4,28 @@ using namespace std;
 
 // n any
 // returns n choose 2
-int n_choose_2(int n) {
-	if (n < 2) return 0;
-	if (n == 2) return 1;
-	return n*(n-1)/2;
+unsigned long long n_choose_2(int n) {
+	if (n < 2) return 0L;
+	if (n == 2) return 1L;
+	unsigned long long long_n = n;
+	return long_n * (long_n-1L) / 2L;
 }
 
 // n >= 2
 // returns n choose 2 - (n-1) choose 2
-int n_diff(int n) {
+unsigned long long n_diff(int n) {
 	return n_choose_2(n) - n_choose_2(n-1);
 }
 
 class ReducedSequence {
 
 private:
-	int* seq;
-	int start,
-		end,
-		size,
-		size_max,
-		sum;
+	unsigned int* seq;
+	unsigned int start,
+				 end,
+				 size,
+				 size_max;
+	unsigned long long sum;
 
 	void increment_start();
 	void increment_end();
@@ -34,7 +35,7 @@ public:
 	ReducedSequence(int);
 	~ReducedSequence();
 
-	int get_sum() { return sum; }
+	unsigned long long get_sum() { return sum; }
 
 	void increment_curr(bool);
 	void increment_new(bool);
@@ -58,13 +59,13 @@ void ReducedSequence::increment_end() {
 }
 
 ReducedSequence::ReducedSequence(int k) {
-	seq = new int[k];
+	seq = new unsigned int[k];
 	seq[0] = 1;
 	start = 0;
 	end = 0;
 	size = 1;
 	size_max = k;
-	sum = 0;
+	sum = 0L;
 }
 
 ReducedSequence::~ReducedSequence() {
@@ -126,7 +127,7 @@ void ReducedSequence::print_seq() {
 
 /** This is a solution that uses very little 
 	memory and computation to solve the problem. 
-	It runs in constant time with respect to N.
+	It runs in O(N) time.
 	In fact, this can be easily modified to 
 	take data from a stream, and still achieve
 	the same efficiency.
@@ -152,6 +153,9 @@ int main () {
 	cin >> previous_number;
 	numbers_read++;
 
+	// edge case
+	if (k == 1) cout << 0 << endl;
+
 	for (; numbers_read < n; ) {
 		cin >> current_number;
 		numbers_read++;
@@ -175,7 +179,7 @@ int main () {
 		// non_pos.print_seq();
 
 		if (numbers_read >= k) {
-			int result = non_neg.get_sum() - non_pos.get_sum();
+			long long result = non_neg.get_sum() - non_pos.get_sum();
 			cout << result << endl;
 		}
 
